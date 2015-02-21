@@ -1,0 +1,84 @@
+package Parse;
+
+action code {: static Symbol.Symbol sym(String s) {
+	         return Symbol.Symbol.symbol(s);
+	        }
+	    :};
+
+parser code  {: 
+  Lexer lexer;
+
+  public void syntax_error(java_cup.runtime.Symbol current) {
+   report_error("Syntax error (" + current.sym + ")", current);
+  }
+
+  ErrorMsg.ErrorMsg errorMsg;
+
+  public void report_error(String message, java_cup.runtime.Symbol info) {
+      errorMsg.error(info.left, message);
+  }
+
+  public Grm(Lexer l, ErrorMsg.ErrorMsg err) {
+    this();
+    errorMsg=err;
+    lexer=l;
+  }
+:};
+
+scan with {: return lexer.nextToken(); :};
+
+terminal String ID, STRING;
+terminal Integer INT;
+terminal COMMA, COLON, SEMICOLON, LPAREN, RPAREN, LBRACK, RBRACK, 
+	LBRACE, RBRACE, DOT, PLUS, MINUS, TIMES, DIVIDE, EQ, NEQ, LT, LE, 
+	GT, GE, AND, OR, ASSIGN, ARRAY, IF, THEN, ELSE, WHILE, FOR, TO,
+	DO, LET, IN, END, OF, BREAK, NIL, FUNCTION, VAR, TYPE;
+
+non terminal Absyn.Exp          Exp;
+non terminal Absyn.ArrayExp     ArrayExp;
+non terminal Absyn.AssignExp    AssignExp;
+non terminal Absyn.BreakExp     BreakExp;
+non terminal Absyn.CallExp      CallExp;
+non terminal Absyn.ForExp       ForExp;
+non terminal Absyn.IfExp        IfExp;
+non terminal Absyn.IntExp       IntExp;
+non terminal Absyn.LetExp       LetExp;
+non terminal Absyn.NilExp       NilExp;
+non terminal Absyn.OpExp        OpExp;
+non terminal Absyn.RecordExp    RecordExp;
+non terminal Absyn.SeqExp       SeqExp;
+non terminal Absyn.StringExp    StringExp;
+non terminal Absyn.VarExp       VarExp;
+non terminal Absyn.WhileExp     WhileExp;
+
+non terminal Absyn.Dec          Dec;
+non terminal Absyn.FunctionDec  FunctionDec;
+non terminal Absyn.TypeDec      TypeDec;
+non terminal Absyn.VarDec       VarDec;
+
+non terminal Absyn.Var          Var;
+non terminal Absyn.SimpleVar    SimpleVar;
+non terminal Absyn.SubscriptVar SubscriptVar;
+non terminal Absyn.FieldVar     FieldVar;
+
+non terminal Absyn.ExpList      ExpList;
+non terminal Absyn.DecList      DecList;
+non terminal Absyn.FieldList    FieldList;
+non terminal Absyn.FieldExpList FieldExpList;
+
+non terminal Absyn.Ty           Ty;
+non terminal Absyn.ArrayTy      ArrayTy;
+non terminal Absyn.NameTy       NameTy;
+non terminal Absyn.RecordTy     RecordTy;
+
+start with Exp;
+
+Exp ::= error:e
+	  {: RESULT = new Absyn.SeqExp(eleft, null); :}
+	| Var:v
+	  {: RESULT = new Absyn.VarExp(vleft, v); :}
+	;
+
+Var ::=   ID:n
+	  {: RESULT = new Absyn.SimpleVar(nleft, sym(n)); :}
+	;

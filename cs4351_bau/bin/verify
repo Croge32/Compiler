@@ -1,0 +1,17 @@
+#!/bin/sh
+course=cs4351
+grader=cs4351_bau
+
+
+gradingdir=/classes/$course/$grader/grading
+
+
+if [ $# -ne 1 ]
+then
+   echo "Invalid number of parameters"
+   echo "Usage: "
+   echo "      verify N"
+   echo " where N is the number of the assignment (1, 2, etc)."
+else
+   sudo -u $grader /classes/$course/$grader/bin/verinew $1 $LOGNAME
+fi

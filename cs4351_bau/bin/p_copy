@@ -1,0 +1,46 @@
+#!/bin/sh
+course=cs4351
+grader=cs4351_bau
+
+
+classbin=/classes/$course/$grader/bin
+group=/classes/$course
+
+
+if [ $# -ne 1 ]
+ then 
+    echo "Invalid number of parameters"
+    echo "Usage: "
+    echo "      p_copy N"
+    echo " where N is the number of the assignment (1, 2, etc.)"
+    
+ else 
+    name=`ls -1 $group/$LOGNAME/prog$1`
+    if [ $#name = 0 ]
+      then
+        echo "No files found in $group/$LOGNAME/prog$1"
+        exit 1
+    fi 
+    
+    if [ -d /tmp/$LOGNAME ]
+      then
+#        mkdir /tmp/$LOGNAME
+#        chmod 777 /tmp/$LOGNAME
+#      else
+        /bin/rm -fr /tmp/$LOGNAME/*
+    fi
+
+#    trap 'rm -fr /tmp/$LOGNAME ; echo PROGRAM INTERRUPTED; exit 1' 1 2 3 18
+#    for file in $name
+#      do 
+#        cat $group/$LOGNAME/prog$1/$file > /tmp/$LOGNAME/$file
+#        chmod ugo=rw /tmp/$LOGNAME/$file
+#      done
+     cp -Rp $group/$LOGNAME/prog$1  /tmp/$LOGNAME
+     chmod -R 777 /tmp/$LOGNAME
+
+    sudo -u $grader $classbin/pcnew $1 $LOGNAME
+    
+    /bin/rm -fr /tmp/$LOGNAME
+
+fi

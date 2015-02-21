@@ -1,0 +1,19 @@
+#!/bin/sh
+course=cs4351
+grader=cs4351_bau
+
+
+
+gradingdir=/classes/$course/$grader/grading
+
+if [ $# -ne 2 ]
+then
+   echo "Invalid number of parameters"
+   echo "Usage: "
+   echo "      verify N"
+   echo " where N is the number of the assignment (1, 2, etc)."
+else
+   LOGNAME=$2
+   echo "The following files were submitted for grading"
+   ls -lR $gradingdir/prog$1/$LOGNAME
+fi

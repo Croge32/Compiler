@@ -1,0 +1,42 @@
+#!/bin/sh
+course=cs4351
+grader=cs4351_bau
+
+
+gradingdir=/classes/$course/$grader/grading
+
+#unalias rm
+
+
+if [ $# -ne 2 ]
+ then
+    echo "You forgot to specify the program number"
+    echo "For example (for prog2): "
+    echo "      p_copy 2"
+    exit 1
+fi
+
+#set logname to logname of original user
+LOGNAME=$2
+
+echo $LOGNAME
+if [ ! -d /tmp/$LOGNAME ]
+then
+    echo "Intermediate directories not generated"
+    echo "Talk with your grader for submission"
+    exit 1
+fi
+if [ ! -d $gradingdir/prog$1/$LOGNAME ]
+then
+    mkdir $gradingdir/prog$1/$LOGNAME
+else
+    /bin/rm -fr $gradingdir/prog$1/$LOGNAME/*
+fi
+name=`ls -1 /tmp/$LOGNAME`
+for file in $name
+do
+   /bin/cp -Rp /tmp/$LOGNAME/$file $gradingdir/prog$1/$LOGNAME
+   echo "File or directory  "  $file " received."
+done
+
+echo 'Use the verify script to verify what you submitted.'
