@@ -1,0 +1,1 @@
+javac ${JFLAGS} Parse/*.java; cd Parse; java java_cup.Main -parser Grm -expect 3 -nonterms -dump_grammar -dump_states <Grm.cup >Grm.out 2>Grm.err; cd ..

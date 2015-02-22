@@ -1,0 +1,1 @@
+rm -f */*.class Parse/Grm.java Parse/Grm.err Parse/Grm.out
