@@ -1,4 +1,4 @@
-export HOMEDIR=~/Downloads
+export HOMEDIR=~/Desktop
 
 export CS4351=${HOMEDIR}/Compiler/cs4351_bau/pub
 export PROG=chap4
